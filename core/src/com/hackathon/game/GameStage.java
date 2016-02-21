@@ -2,7 +2,6 @@ package com.hackathon.game;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.hackathon.game.actors.Background;
-import com.hackathon.game.actors.CrazyBiker;
 import com.hackathon.game.actors.Pleep;
 
 /**
@@ -12,7 +11,6 @@ public class GameStage extends Stage {
 
     public GameStage() {
         addActor(new Background());
-        addActor(new CrazyBiker());
         addActor(new Pleep());
     }
 
