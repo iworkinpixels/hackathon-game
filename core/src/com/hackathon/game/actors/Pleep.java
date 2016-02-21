@@ -1,8 +1,17 @@
-package com.hackathon.game;
+package com.hackathon.game.actors;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 
-public class Pleep {
+public class Pleep extends Actor {
+
+    private Sprite pleepSprite;
+
+
     private Rectangle pleep;
     private String direction;
     private double velocity;
@@ -12,6 +21,8 @@ public class Pleep {
     public Pleep () {
         pleep = new Rectangle();
         this.velocity = 0;
+
+        pleepSprite = new Sprite(new TextureRegion(new Texture("images/bikesolo.png")));
     }
 
     public Pleep(int x, int y, int width, int height, double velocity, String direction, String state, boolean isAlive) {
@@ -20,6 +31,11 @@ public class Pleep {
         this.direction = direction;
         this.state = state;
         this.isAlive = isAlive;
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        pleepSprite.draw(batch);
     }
 
     public double GetVelocity() {
