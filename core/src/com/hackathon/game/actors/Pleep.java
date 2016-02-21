@@ -49,9 +49,14 @@ public class Pleep extends Actor {
         statetime += delta;
 
 
-        if (this.getX() > Constants.VIEWPORT_WIDTH - (FRAME_WIDTH/2) || this.getX() < -(Constants.VIEWPORT_WIDTH/4)+(FRAME_WIDTH/4)) {
+        if (this.getX() > Constants.VIEWPORT_WIDTH || this.getX() < (-Constants.VIEWPORT_WIDTH/4)-(FRAME_WIDTH/4)) {
             this.velocity = -this.velocity;
             this.direction = !this.direction;
+            if (this.direction) {
+                this.boundingBox.x += FRAME_WIDTH/2;
+            }else {
+                this.boundingBox.x -= FRAME_WIDTH/2;
+            }
         }
 
         this.boundingBox.x += this.velocity;
@@ -63,15 +68,15 @@ public class Pleep extends Actor {
                 batch.draw(walkAnimation.getKeyFrame(this.statetime, true),
                         this.getX(), //the x-coordinate in screen space
                         this.getY(), //the y-coordinate in screen space
-                        FRAME_WIDTH, //width
-                        FRAME_HEIGHT // height
+                        FRAME_WIDTH/2, //width
+                        FRAME_HEIGHT/2 // height
                 );
             } else {
                 batch.draw(walkAnimation.getKeyFrame(this.statetime, true),
                         this.getX()+FRAME_WIDTH, //the x-coordinate in screen space
                         this.getY(), //the y-coordinate in screen space
-                        -FRAME_WIDTH, //width
-                        FRAME_HEIGHT // height
+                        -FRAME_WIDTH/2, //width
+                        FRAME_HEIGHT/2 // height
                 );
             }
         } else {
