@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class Pleep extends Actor {
 
+    public static final String PLEEP_SPRITE_MAP_PNG = "images/sprite-map.png";
     private Rectangle boundingBox;
     private boolean direction;
     private float velocity;
@@ -29,7 +30,7 @@ public class Pleep extends Actor {
         this.velocity = 0f;
 
 
-        this.spritemap = new Texture(Gdx.files.internal("images/sprite-map.png"));
+        this.spritemap = new Texture(Gdx.files.internal(PLEEP_SPRITE_MAP_PNG));
         TextureRegion[][] tmp = TextureRegion.split(spritemap, FRAME_WIDTH, FRAME_HEIGHT);
         this.walkframes = new TextureRegion[4];
         this.walkframes[0] = tmp[0][8];

@@ -12,22 +12,18 @@ public class GameScreen implements Screen {
 
     public GameScreen() {
         stage = new GameStage();
-//        stage.draw();
+    }
+
+    @Override
+    public void render(float delta) {
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        stage.draw();
+        stage.act(delta);
     }
 
     @Override
     public void show() {
 
-    }
-
-    @Override
-    public void render(float delta) {
-        //Clear the screen
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        //Update the stage
-        stage.draw();
-        stage.act(delta);
     }
 
     @Override

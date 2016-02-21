@@ -5,23 +5,22 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.hackathon.game.Constants;
 
 /**
  * Created by tjago on 2016-02-21.
  */
-public class CrazyBiker extends Actor {
+public class BackgroundCity extends Actor {
 
-    public static final String IMAGE_BIKER_SOLO = "images/bikesolo.png";
-    private Sprite bikerSprite;
+    private Sprite bgSprite;
 
-    public CrazyBiker() {
-
-        bikerSprite = new Sprite(new TextureRegion(new Texture(IMAGE_BIKER_SOLO)));
-        bikerSprite.setPosition(0,0);
+    public BackgroundCity() {
+        bgSprite = new Sprite(new TextureRegion(new Texture(Constants.BACKGROUND_CITY_IMAGE_PATH)));
+        bgSprite.setPosition(0,0);
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        bikerSprite.draw(batch);
+        bgSprite.draw(batch);
     }
 }
