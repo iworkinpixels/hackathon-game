@@ -1,10 +1,14 @@
 package com.hackathon.game.actors;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class Pleep extends Actor {
-
-    private Sprite pleepSprite;
 
     private Rectangle boundingBox;
     private boolean direction;
@@ -13,10 +17,10 @@ public class Pleep extends Actor {
     private boolean isAlive;
     private float statetime;
 
-    public Animation walkAnimation;
-    public Texture spritemap;
-    public TextureRegion[] walkframes;
-    public TextureRegion currentFrame;
+    private Animation walkAnimation;
+    private Texture spritemap;
+    private TextureRegion[] walkframes;
+    private TextureRegion currentFrame;
 
     private static final int FRAME_WIDTH = 256;
     private static final int FRAME_HEIGHT = 256;
@@ -24,17 +28,8 @@ public class Pleep extends Actor {
         boundingBox = new Rectangle();
         this.velocity = 0f;
 
-        pleepSprite = new Sprite(new TextureRegion(new Texture("images/bikesolo.png")));
-    }
 
-    public Pleep(int x, int y, float velocity, boolean direction, String state, boolean isAlive) {
-        this.boundingBox = new Rectangle(x, y, 256, 256);
-        this.velocity = velocity;
-        this.direction = direction;
-        this.state = state;
-        this.isAlive = isAlive;
         this.spritemap = new Texture(Gdx.files.internal("images/sprite-map.png"));
-
         TextureRegion[][] tmp = TextureRegion.split(spritemap, FRAME_WIDTH, FRAME_HEIGHT);
         this.walkframes = new TextureRegion[4];
         this.walkframes[0] = tmp[0][8];
@@ -43,13 +38,46 @@ public class Pleep extends Actor {
         this.walkframes[3] = tmp[1][1];
 
         this.walkAnimation = new Animation(0.1f, this.walkframes);
-
         this.statetime = 0f;
     }
 
+//    public Pleep(int x, int y, float velocity, boolean direction, String state, boolean isAlive) {
+//        this.boundingBox = new Rectangle(x, y, 256, 256);
+//        this.velocity = velocity;
+//        this.direction = direction;
+//        this.state = state;
+//        this.isAlive = isAlive;
+//        this.spritemap = new Texture(Gdx.files.internal("images/sprite-map.png"));
+//
+//        TextureRegion[][] tmp = TextureRegion.split(spritemap, FRAME_WIDTH, FRAME_HEIGHT);
+//        this.walkframes = new TextureRegion[4];
+//        this.walkframes[0] = tmp[0][8];
+//        this.walkframes[1] = tmp[0][9];
+//        this.walkframes[2] = tmp[1][0];
+//        this.walkframes[3] = tmp[1][1];
+//
+//        this.walkAnimation = new Animation(0.1f, this.walkframes);
+//
+//        this.statetime = 0f;
+//    }
+
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        pleepSprite.draw(batch);
+
+        statetime += Gdx.graphics.getDeltaTime();
+
+        int startX = 200;
+
+        if (walkAnimation != null) {
+            batch.draw(walkAnimation.getKeyFrame(this.statetime, true),
+                    startX, //the x-coordinate in screen space
+                    0, //the y-coordinate in screen space
+                    FRAME_WIDTH, //width
+                    FRAME_HEIGHT // height
+            );
+        } else {
+            System.out.println("NULL");
+        }
     }
 
     public float getVelocity() {
@@ -109,8 +137,10 @@ public class Pleep extends Actor {
     }
 
     public TextureRegion getCurrentFrame() {
+
         this.statetime += Gdx.graphics.getDeltaTime();
         this.boundingBox.x = this.boundingBox.x + (float) this.velocity;
+
         return this.walkAnimation.getKeyFrame(this.statetime, true);
     }
 }
