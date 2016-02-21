@@ -33,7 +33,7 @@ public class Pleep extends Actor {
         boundingBox = new Rectangle();
         this.velocity = 2;
         this.direction = true;
-        this.boundingBox.x = FRAME_WIDTH;
+        this.boundingBox.x = -FRAME_WIDTH;
         this.spritemap = new Texture(Gdx.files.internal("images/sprite-map.png"));
         TextureRegion[][] tmp = TextureRegion.split(spritemap, FRAME_WIDTH, FRAME_HEIGHT);
         this.walkframes = new TextureRegion[4];
