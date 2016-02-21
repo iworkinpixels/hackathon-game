@@ -26,6 +26,9 @@ public class Pleep extends Actor {
 
     private static final int FRAME_WIDTH = 256;
     private static final int FRAME_HEIGHT = 256;
+    private static final int BOUNCE_MIN = -(Constants.VIEWPORT_WIDTH/4)-(FRAME_WIDTH/4);
+    private static final int BOUNCE_MAX = Constants.VIEWPORT_WIDTH;
+
     public Pleep () {
         boundingBox = new Rectangle();
         this.velocity = 2;
@@ -50,7 +53,7 @@ public class Pleep extends Actor {
         statetime += delta;
 
 
-        if (this.getX() > Constants.VIEWPORT_WIDTH || this.getX() < (-Constants.VIEWPORT_WIDTH/4)-(FRAME_WIDTH/4)) {
+        if ((this.direction && this.getX() > BOUNCE_MAX) || (!this.direction && this.getX() < BOUNCE_MIN)) {
             this.velocity = -this.velocity;
             this.direction = !this.direction;
             if (this.direction) {
