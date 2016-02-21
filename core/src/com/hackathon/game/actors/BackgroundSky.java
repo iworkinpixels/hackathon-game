@@ -11,14 +11,14 @@ import com.hackathon.game.Constants;
 /**
  * Created by tjago on 2016-02-21.
  */
-public class Background extends Actor {
+public class BackgroundSky extends Actor {
     private final TextureRegion textureRegion;
     private Rectangle textureRegionBounds1;
     private Rectangle textureRegionBounds2;
     private int speed = 100;
 
-    public Background() {
-        textureRegion = new TextureRegion(new Texture(Gdx.files.internal(Constants.BACKGROUND_IMAGE_PATH)));
+    public BackgroundSky() {
+        textureRegion = new TextureRegion(new Texture(Gdx.files.internal(Constants.BACKGROUND_SKY_IMAGE_PATH)));
         textureRegionBounds1 = new Rectangle(0 - Constants.VIEWPORT_WIDTH / 2, 0, Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT);
         textureRegionBounds2 = new Rectangle(Constants.VIEWPORT_WIDTH / 2, 0, Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT);
     }

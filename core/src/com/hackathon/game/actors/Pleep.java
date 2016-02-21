@@ -11,6 +11,7 @@ import com.hackathon.game.Constants;
 
 public class Pleep extends Actor {
 
+    public static final String PLEEP_SPRITE_MAP_PNG = "images/sprite-map.png";
     private Rectangle boundingBox;
     private boolean direction;
     private int velocity;
