@@ -15,13 +15,13 @@ public class GraphicsDemo implements ApplicationListener {
     private TextureAtlas textureAtlas;
     private Sprite sprite;
     private int currentFrame = 1;
-    private String currentAtlasKey = new String("01");
+    private String currentAtlasKey = new String("1");
     
     @Override
     public void create() {        
         batch = new SpriteBatch();
         textureAtlas = new TextureAtlas(Gdx.files.internal("data/tonybike.pack"));
-        AtlasRegion region = textureAtlas.findRegion("01");
+        AtlasRegion region = textureAtlas.findRegion("1");
         sprite = new Sprite(region);
         sprite.setPosition(120, 100);
         
@@ -33,7 +33,7 @@ public class GraphicsDemo implements ApplicationListener {
                         currentFrame = 1;
                     
                     // ATTENTION! String.format() doesnt work under GWT for god knows why...
-                    currentAtlasKey = String.format("%02d", currentFrame);
+                    currentAtlasKey = new Integer(currentFrame).toString();
                     sprite.setRegion(textureAtlas.findRegion(currentAtlasKey));
                 }
             }

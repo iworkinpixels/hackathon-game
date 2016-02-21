@@ -19,7 +19,7 @@ public class HackathonGame extends Game {
 	Texture background, midgroundTexture;
 	Sprite sprite, sprite2, midground;
     int currentFrame = 1, sprite2V =1, worldV = 6;
-    String currentAtlasKey = new String("01");
+    String currentAtlasKey = new String("1");
     private TextureAtlas textureAtlas;
     
 	@Override
@@ -30,7 +30,7 @@ public class HackathonGame extends Game {
 		background = new Texture("images/background.jpg");
 		
 		textureAtlas = new TextureAtlas(Gdx.files.internal("images/tonybike.pack"));
-        AtlasRegion region = textureAtlas.findRegion("01");
+        AtlasRegion region = textureAtlas.findRegion("1");
         sprite = new Sprite(region);
         sprite2 = new Sprite(region);
         
@@ -67,7 +67,7 @@ public class HackathonGame extends Game {
                     currentFrame = 1;
                 
                 // ATTENTION! String.format() doesnt work under GWT for god knows why...
-                currentAtlasKey = String.format("%02d", currentFrame);
+                currentAtlasKey = new Integer(currentFrame).toString();
                 sprite.setRegion(textureAtlas.findRegion(currentAtlasKey));
                 sprite2.setRegion(textureAtlas.findRegion(currentAtlasKey));
             }
