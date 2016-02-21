@@ -1,52 +1,55 @@
 package com.hackathon.game;
 
-import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-public class AnimationDemo implements ApplicationListener {
-    private SpriteBatch batch;
-    private TextureAtlas textureAtlas;
-    private Animation animation;
-    private float elapsedTime = 0;
-    
+public class AnimationDemo extends Game {
+
+    private static final int        FRAME_COLS = 10;         // #1
+    private static final int        FRAME_ROWS = 2;         // #2
+
+    Animation                       walkAnimation;          // #3
+    Texture                         walkSheet;              // #4
+    TextureRegion[]                 walkFrames;             // #5
+    SpriteBatch                     spriteBatch;            // #6
+    TextureRegion                   currentFrame;           // #7
+
+    float stateTime;                                        // #8
+
     @Override
-    public void create() {        
-        batch = new SpriteBatch();
-        textureAtlas = new TextureAtlas(Gdx.files.internal("data/tonybike.pack"));
-        animation = new Animation(1/15f, textureAtlas.getRegions());
+    public void create() {
+        walkSheet = new Texture(Gdx.files.internal("images/sprite-map.png")); // #9
+        TextureRegion[][] tmp = TextureRegion.split(walkSheet, walkSheet.getWidth() / FRAME_COLS, 256);
+        //TextureRegion[][] tmp = TextureRegion.split(walkSheet, walkSheet.getWidth() / FRAME_COLS, walkSheet.getHeight() / FRAME_ROWS);              // #10
+        walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
+        int index = 0;
+        for (int i = 0; i < FRAME_ROWS; i++) {
+            for (int j = 0; j < FRAME_COLS; j++) {
+                walkFrames[index++] = tmp[i][j];
+            }
+        }
+        walkAnimation = new Animation(0.1f, walkFrames);      // #11
+        spriteBatch = new SpriteBatch();                // #12
+        stateTime = 0f;                         // #13
+    }
+
+    @Override
+    public void render() {
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);                        // #14
+        stateTime += Gdx.graphics.getDeltaTime();           // #15
+        currentFrame = walkAnimation.getKeyFrame(stateTime, true);  // #16
+        spriteBatch.begin();
+        spriteBatch.draw(currentFrame, 50, 50);             // #17
+        spriteBatch.end();
     }
 
     @Override
     public void dispose() {
-        batch.dispose();
-        textureAtlas.dispose();
-    }
-
-    @Override
-    public void render() {        
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        
-        batch.begin();
-        //sprite.draw(batch);
-        elapsedTime += Gdx.graphics.getDeltaTime();
-        batch.draw(animation.getKeyFrame(elapsedTime, true), 0, 0);
-        batch.end();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-    }
-
-    @Override
-    public void pause() {
-    }
-
-    @Override
-    public void resume() {
+        spriteBatch.dispose();
     }
 }

@@ -3,19 +3,19 @@ package com.hackathon.game;
 import com.badlogic.gdx.math.Rectangle;
 
 public class Pleep {
-    private Rectangle pleep;
-    private String direction;
+    private Rectangle boundingBox;
+    private boolean direction;
     private double velocity;
     private String state;
     private boolean isAlive;
 
     public Pleep () {
-        pleep = new Rectangle();
+        boundingBox = new Rectangle();
         this.velocity = 0;
     }
 
-    public Pleep(int x, int y, int width, int height, double velocity, String direction, String state, boolean isAlive) {
-        pleep = new Rectangle(x, y, width, height);
+    public Pleep(int x, int y, int width, int height, double velocity, boolean direction, String state, boolean isAlive) {
+        boundingBox = new Rectangle(x, y, width, height);
         this.velocity = velocity;
         this.direction = direction;
         this.state = state;
@@ -26,15 +26,15 @@ public class Pleep {
         return velocity;
     }
 
-    public String GetDirection() {
+    public boolean GetDirection() {
         return direction;
     }
 
     public double GetX() {
-        return this.pleep.getX();
+        return this.boundingBox.getX();
     }
     public double GetY() {
-        return this.pleep.getY();
+        return this.boundingBox.getY();
     }
 
     public boolean IsDead () {
@@ -46,22 +46,22 @@ public class Pleep {
     }
 
     public Rectangle GetRectangle() {
-        return this.pleep;
+        return this.boundingBox;
     }
 
     public void SetPosition(int x, int y) {
-        pleep.setPosition(x, y);
+        boundingBox.setPosition(x, y);
     }
 
     public void SetSize(int width, int height) {
-        pleep.setSize(width, height);
+        boundingBox.setSize(width, height);
     }
 
     public void SetState(String state) {
         this.state = state;
     }
 
-    public void SetDirection(String direction) {
+    public void SetDirection(boolean direction) {
         this.direction = direction;
     }
 
@@ -73,7 +73,7 @@ public class Pleep {
         this.isAlive = false;
     }
 
-    public void BornPleep() {
+    public void BirthPleep() {
         this.isAlive = true;
     }
 }
