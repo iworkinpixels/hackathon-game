@@ -2,10 +2,6 @@ package com.hackathon.game;
 
 import com.badlogic.gdx.math.Rectangle;
 
-/**
- * Created by Daniel Miller on 2016-02-20.
- */
-
 public class Pleep {
     private Rectangle pleep;
     private String direction;
