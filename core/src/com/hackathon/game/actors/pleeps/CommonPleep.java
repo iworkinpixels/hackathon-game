@@ -1,4 +1,4 @@
-package com.hackathon.game.actors;
+package com.hackathon.game.actors.pleeps;
 
 public class CommonPleep extends BasePleep {
 

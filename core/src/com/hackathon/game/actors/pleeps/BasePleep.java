@@ -1,4 +1,4 @@
-package com.hackathon.game.actors;
+package com.hackathon.game.actors.pleeps;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -14,15 +14,11 @@ public abstract class BasePleep extends Actor {
     private Rectangle boundingBox;
     MoveDirection direction;
     private int velocity;
-    private String state;
-    private boolean isAlive;
     private float statetime;
 
+    final private Texture spritemap = new Texture(Gdx.files.internal(Constants.PLEEP_SPRITE_MAP));
     private Animation walkAnimation;
-    private Texture spritemap;
-    private TextureRegion[] walkframes;
-    private TextureRegion currentFrame;
-
+    private Animation deathAnimation;
 
     private PleepState pleepState;
     private static final int FRAME_WIDTH = 256;
@@ -38,17 +34,34 @@ public abstract class BasePleep extends Actor {
         boundingBox = new Rectangle();
         this.velocity = 2;
         this.boundingBox.x = -FRAME_WIDTH;
-        this.spritemap = new Texture(Gdx.files.internal(Constants.PLEEP_SPRITE_MAP));
+        this.statetime = 0f;
+
+        walkAnimation = initWalkAnimation();
+        deathAnimation = initDeathAnimation();
+    }
+
+    private Animation initDeathAnimation() {
 
         TextureRegion[][] tmp = TextureRegion.split(spritemap, FRAME_WIDTH, FRAME_HEIGHT);
-        this.walkframes = new TextureRegion[4];
-        this.walkframes[0] = tmp[0][8];
-        this.walkframes[1] = tmp[0][9];
-        this.walkframes[2] = tmp[1][0];
-        this.walkframes[3] = tmp[1][1];
+        TextureRegion[] frames = new TextureRegion[20];
+        for(int x = 0; x < 10; x++) {
+            frames[x] = tmp[11][x];
+            frames[x +10] = tmp[12][x];
+        }
 
-        this.walkAnimation = new Animation(0.1f, this.walkframes);
-        this.statetime = 0f;
+        return new Animation(0.1f, frames);
+    }
+
+    private Animation initWalkAnimation() {
+
+        TextureRegion[][] tmp = TextureRegion.split(spritemap, FRAME_WIDTH, FRAME_HEIGHT);
+        TextureRegion[] walkframes = new TextureRegion[4];
+        walkframes[0] = tmp[0][8];
+        walkframes[1] = tmp[0][9];
+        walkframes[2] = tmp[1][0];
+        walkframes[3] = tmp[1][1];
+
+        return new Animation(0.1f, walkframes);
     }
 
 
@@ -74,10 +87,10 @@ public abstract class BasePleep extends Actor {
                 //TODO put animation here
                 break;
             case DYING:
-                //TODO put animation here
+                animate(batch, deathAnimation, this.direction);
                 break;
             case DEAD:
-                //TODO put animation here
+//                animate(batch, deathAnimation, this.direction);
                 break;
             default:
                 // this block should not be entered ever!
@@ -107,36 +120,43 @@ public abstract class BasePleep extends Actor {
     }
 
     private void animate(Batch batch, Animation animation, MoveDirection direction) {
-        if (animation != null) {
-            if (this.direction == MoveDirection.RIGHT) {
-                batch.draw(animation.getKeyFrame(this.statetime, true),
-                        this.getX(), //the x-coordinate in screen space
-                        this.getY(), //the y-coordinate in screen space
-                        FRAME_WIDTH/2, //width
-                        FRAME_HEIGHT/2 // height
-                );
-            } else {
-                batch.draw(animation.getKeyFrame(this.statetime, true),
-                        this.getX()+FRAME_WIDTH, //the x-coordinate in screen space
-                        this.getY(), //the y-coordinate in screen space
-                        -FRAME_WIDTH/2, //width
-                        FRAME_HEIGHT/2 // height
-                );
-            }
-        } else {
+        if (animation == null || batch == null) {
             System.out.println("NULL");
+            return;
+        }
+
+        if (direction == MoveDirection.RIGHT) {
+            batch.draw(animation.getKeyFrame(this.statetime, true),
+                    this.getX(), //the x-coordinate in screen space
+                    this.getY(), //the y-coordinate in screen space
+                    FRAME_WIDTH / 2, //width
+                    FRAME_HEIGHT / 2 // height
+            );
+        }
+        if (direction == MoveDirection.LEFT) {
+            batch.draw(animation.getKeyFrame(this.statetime, true),
+                    this.getX()+FRAME_WIDTH, //the x-coordinate in screen space
+                    this.getY(), //the y-coordinate in screen space
+                    -FRAME_WIDTH/2, //width
+                    FRAME_HEIGHT/2 // height
+            );
         }
     }
 
     /********** ACTIONS **************/
 
-    public void burnToAshes() {
-        pleepState = PleepState.DYING;
+    public void killPleep() {
+        this.pleepState = PleepState.DYING;
     }
+
+    public void birthPleep() {
+        //TODO implement me
+    }
+
+    //TODO add more actions - add abstract actions for actions not possessed by each Pleep
 
     abstract void startRunning();
 
-    //TODO add more actions
 
     /********** ******* **************/
     public int getVelocity() {
@@ -151,14 +171,6 @@ public abstract class BasePleep extends Actor {
         return this.boundingBox.getY();
     }
 
-    public boolean isDead () {
-        return this.isAlive;
-    }
-
-    public String getState() {
-        return this.state;
-    }
-
     public Rectangle getRectangle() {
         return this.boundingBox;
     }
@@ -171,22 +183,11 @@ public abstract class BasePleep extends Actor {
         this.boundingBox.setSize(width, height);
     }
 
-    public void setState(String state) {
-        this.state = state;
-    }
-
     public void setVelocity(int velocity) {
         this.velocity = velocity;
     }
 
-    public void killPleep() {
-        this.isAlive = false;
-    }
-
-    public void birthPleep() {
-        this.isAlive = true;
-    }
-
+    @Deprecated
     public TextureRegion getCurrentFrame() {
         this.statetime += Gdx.graphics.getDeltaTime();
         this.boundingBox.x = this.boundingBox.x + this.velocity;

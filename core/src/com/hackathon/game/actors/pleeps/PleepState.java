@@ -1,4 +1,4 @@
-package com.hackathon.game.actors;
+package com.hackathon.game.actors.pleeps;
 
 /**
  * Created by tjago on 2016-02-22.

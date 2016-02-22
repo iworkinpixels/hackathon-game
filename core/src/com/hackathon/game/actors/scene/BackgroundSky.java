@@ -1,4 +1,4 @@
-package com.hackathon.game.actors;
+package com.hackathon.game.actors.scene;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
