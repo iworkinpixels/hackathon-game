@@ -1,5 +1,8 @@
 package com.hackathon.game.actors.pleeps;
 
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -38,6 +41,8 @@ public abstract class BasePleep extends Actor {
 
         walkAnimation = initWalkAnimation();
         deathAnimation = initDeathAnimation();
+
+        birthPleep();
     }
 
     private Animation initDeathAnimation() {
@@ -90,7 +95,6 @@ public abstract class BasePleep extends Actor {
                 animate(batch, deathAnimation, this.direction);
                 break;
             case DEAD:
-//                animate(batch, deathAnimation, this.direction);
                 break;
             default:
                 // this block should not be entered ever!
@@ -100,7 +104,6 @@ public abstract class BasePleep extends Actor {
     }
 
     private void movementCalculations() {
-
         float delta = Gdx.graphics.getDeltaTime();
         statetime += delta;
 
@@ -116,7 +119,6 @@ public abstract class BasePleep extends Actor {
             }
         }
         this.boundingBox.x += this.velocity;
-        System.out.println(this.getX());
     }
 
     private void animate(Batch batch, Animation animation, MoveDirection direction) {
@@ -125,21 +127,29 @@ public abstract class BasePleep extends Actor {
             return;
         }
 
-        if (direction == MoveDirection.RIGHT) {
-            batch.draw(animation.getKeyFrame(this.statetime, true),
-                    this.getX(), //the x-coordinate in screen space
-                    this.getY(), //the y-coordinate in screen space
-                    FRAME_WIDTH / 2, //width
-                    FRAME_HEIGHT / 2 // height
-            );
-        }
-        if (direction == MoveDirection.LEFT) {
-            batch.draw(animation.getKeyFrame(this.statetime, true),
-                    this.getX()+FRAME_WIDTH, //the x-coordinate in screen space
-                    this.getY(), //the y-coordinate in screen space
-                    -FRAME_WIDTH/2, //width
-                    FRAME_HEIGHT/2 // height
-            );
+
+        switch (pleepState) {
+            case WALKING:
+            case DYING:
+                if (direction == MoveDirection.RIGHT) {
+                    batch.draw(animation.getKeyFrame(this.statetime, true),
+                            this.getX(), //the x-coordinate in screen space
+                            this.getY(), //the y-coordinate in screen space
+                            FRAME_WIDTH / 2, //width
+                            FRAME_HEIGHT / 2 // height
+                    );
+                }
+                if (direction == MoveDirection.LEFT) {
+                    batch.draw(animation.getKeyFrame(this.statetime, true),
+                            this.getX() + FRAME_WIDTH, //the x-coordinate in screen space
+                            this.getY(), //the y-coordinate in screen space
+                            -FRAME_WIDTH / 2, //width
+                            FRAME_HEIGHT / 2 // height
+                    );
+                }
+                break;
+            default:
+                // You should NEVER be here.
         }
     }
 
@@ -147,10 +157,44 @@ public abstract class BasePleep extends Actor {
 
     public void killPleep() {
         this.pleepState = PleepState.DYING;
+        this.velocity = 0;
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                pleepState = PleepState.DEAD;
+                birthPleep();
+            }
+        }, 1400);
     }
 
     public void birthPleep() {
-        //TODO implement me
+        // Set the pleep to walking
+        this.pleepState = PleepState.WALKING;
+        this.statetime = 0;
+        // Set a direction for the pleep
+        int randd = randInt(0,1);
+        if (randd > 0) {
+            this.direction = this.direction.LEFT;
+            this.boundingBox.x = BOUNCE_MAX;
+            this.velocity = -2;
+        } else {
+            this.direction = this.direction.RIGHT;
+            this.boundingBox.x = BOUNCE_MIN;
+            this.velocity = 2;
+        }
+        //Set a random Y height for the pleep
+        int ypos = randInt(0,25);
+        this.boundingBox.y = ypos;
+        //In your travels, you must have learned that pleeps are mortal, therefore I can clearly not
+        //choose the glass in front of you!
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                killPleep();
+            }
+        }, 3000);
     }
 
     //TODO add more actions - add abstract actions for actions not possessed by each Pleep
@@ -187,11 +231,12 @@ public abstract class BasePleep extends Actor {
         this.velocity = velocity;
     }
 
-    @Deprecated
-    public TextureRegion getCurrentFrame() {
-        this.statetime += Gdx.graphics.getDeltaTime();
-        this.boundingBox.x = this.boundingBox.x + this.velocity;
+    public static int randInt(int min, int max) {
+        Random rand;
+        rand = new Random();
 
-        return this.walkAnimation.getKeyFrame(this.statetime, true);
+        int randomNum = rand.nextInt((max - min) + 1) + min;
+
+        return randomNum;
     }
 }
