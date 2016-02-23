@@ -4,8 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.utils.viewport.FillViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 
 /**
  * Created by tjago on 2016-02-21.
@@ -13,14 +12,16 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 public class GameScreen implements Screen {
     private GameStage stage;
     OrthographicCamera camera;
-    Viewport viewport;
+    FitViewport viewport;
 
     public GameScreen() {
         stage = new GameStage();
 
         camera = new OrthographicCamera(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT);
-        viewport = new FillViewport(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT, camera);
+        viewport = new FitViewport(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT, camera);
         viewport.apply();
+
+        camera.position.set(camera.viewportWidth/2,camera.viewportHeight/2,0);
     }
 
     @Override
