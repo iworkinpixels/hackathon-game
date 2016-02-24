@@ -17,7 +17,6 @@ public class SoldierPleep extends BasePleep {
 
     private void newWalkAnimation() {
 
-        TextureRegion[][] spritePosition = TextureRegion.split(spritemap, FRAME_WIDTH, FRAME_HEIGHT);
         TextureRegion[] walkframes = new TextureRegion[7];
         walkframes[0] = spritePosition[5][3];
         walkframes[1] = spritePosition[5][4];

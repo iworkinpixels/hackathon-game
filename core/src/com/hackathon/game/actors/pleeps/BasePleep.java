@@ -15,23 +15,27 @@ import java.util.TimerTask;
 
 public abstract class BasePleep extends Actor implements Pleep {
 
-    private Rectangle boundingBox;
+    protected static final int FRAME_WIDTH  = 256;
+    protected static final int FRAME_HEIGHT = 256;
+    protected static final int BOUNCE_MIN   = -(Constants.VIEWPORT_WIDTH/4)-(FRAME_WIDTH/4);
+    protected static final int BOUNCE_MAX   = Constants.VIEWPORT_WIDTH;
+
+    /** shared Texture resource among objects, should be static */
+    final static protected Texture spritemap = new Texture(Gdx.files.internal(Constants.PLEEP_SPRITE_MAP));
+    public static final int DURATION_OF_DEATH_ANIMATION = 1400;
+    static protected TextureRegion[][] spritePosition = TextureRegion.split(spritemap, FRAME_WIDTH, FRAME_HEIGHT);
+
     MoveDirection direction;
+    private Rectangle boundingBox;
     private int velocity;
     private float statetime;
 
-    final static protected Texture spritemap = new Texture(Gdx.files.internal(Constants.PLEEP_SPRITE_MAP));
     protected Animation walkAnimation;
     protected Animation deathAnimation;
 
     protected PleepState pleepState;
-    protected static final int FRAME_WIDTH = 256;
-    protected static final int FRAME_HEIGHT = 256;
-    private static final int BOUNCE_MIN = -(Constants.VIEWPORT_WIDTH/4)-(FRAME_WIDTH/4);
-    private static final int BOUNCE_MAX = Constants.VIEWPORT_WIDTH;
 
     public BasePleep() {
-
         this.pleepState = PleepState.WALKING;
         this.direction = MoveDirection.RIGHT;
 
@@ -77,30 +81,38 @@ public abstract class BasePleep extends Actor implements Pleep {
         movementCalculations();
 
         switch (pleepState) {
+
             case WALKING:
                 animate(batch, walkAnimation, this.direction);
                 break;
+
             case RUNNING:
                 //TODO put animation here
                 break;
+
             case THROWING:
                 //TODO put animation here
                 break;
+
             case POINTING:
                 //TODO put animation here
                 break;
+
             case STOPPING:
                 //TODO put animation here
                 break;
+
             case DYING:
                 animate(batch, deathAnimation, this.direction);
+                //wait 1.5 sec to finish animation
                 new Timer().schedule(new TimerTask() {
                     @Override
                     public void run() {
                         pleepState = PleepState.DEAD;
                     }
-                }, 1400);
+                }, DURATION_OF_DEATH_ANIMATION);
                 break;
+
             case DEAD:
                 break;
             default:
@@ -166,18 +178,10 @@ public abstract class BasePleep extends Actor implements Pleep {
     public void killPleep() {
         this.pleepState = PleepState.DYING;
         this.velocity = 0;
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                pleepState = PleepState.DEAD;
-                birthPleep();
-            }
-        }, 1400);
     }
 
     @Override
-    public void birthPleep() {
+    public void birthPleep() { //TODO refactor - logics outside
         // Set the pleep to walking
         this.pleepState = PleepState.WALKING;
         this.statetime = 0;

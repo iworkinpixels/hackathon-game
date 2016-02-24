@@ -4,10 +4,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Timer;
 import com.hackathon.game.actors.pleeps.BasePleep;
 import com.hackathon.game.actors.pleeps.Pleep;
-import com.hackathon.game.actors.pleeps.SoldierPleep;
+import com.hackathon.game.actors.pleeps.PleepFactory;
 import com.hackathon.game.actors.scene.BackgroundCity;
 import com.hackathon.game.actors.scene.BackgroundSky;
-import com.hackathon.game.actors.pleeps.PleepFactory;
 
 /**
  * Created by tjago on 2016-02-21.
@@ -26,11 +25,11 @@ public class GameStage extends Stage {
 
         final PleepFactory pleepFactory = new PleepFactory();
 
-        /** experiment - schedule Pleep death */
+        /** scheduler - add Pleep to stage every 2 secs */
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
-                Pleep newPleep = pleepFactory.createPleep(SoldierPleep.FACTORY_NAME);
+                Pleep newPleep = pleepFactory.createRandomPleep();
                 addActor((BasePleep) newPleep);
             }
         }, START_NOW, EVERY_2_SECONDS);
