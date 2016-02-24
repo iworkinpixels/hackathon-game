@@ -2,34 +2,38 @@ package com.hackathon.game;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Timer;
-import com.hackathon.game.actors.pleeps.CommonPleep;
+import com.hackathon.game.actors.pleeps.BasePleep;
+import com.hackathon.game.actors.pleeps.Pleep;
+import com.hackathon.game.actors.pleeps.SoldierPleep;
 import com.hackathon.game.actors.scene.BackgroundCity;
 import com.hackathon.game.actors.scene.BackgroundSky;
+import com.hackathon.game.actors.pleeps.PleepFactory;
 
 /**
  * Created by tjago on 2016-02-21.
  */
 public class GameStage extends Stage {
 
+    private static final float START_NOW = 0f;
     private static final float START_AFTER_5_SECONDS = 5f;
     private static final float START_AFTER_3_SECONDS = 3f;
-    private static final float START_NOW = 0f;
+    private static final float START_AFTER_1_SECOND = 3f;
+    private static final float EVERY_2_SECONDS = 2L;
 
     public GameStage() {
         addActor(new BackgroundSky());
         addActor(new BackgroundCity());
 
-        final CommonPleep walkingPleep = new CommonPleep();
-        addActor(walkingPleep);
-
+        final PleepFactory pleepFactory = new PleepFactory();
 
         /** experiment - schedule Pleep death */
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
-                walkingPleep.killPleep();
+                Pleep newPleep = pleepFactory.createPleep(SoldierPleep.FACTORY_NAME);
+                addActor((BasePleep) newPleep);
             }
-        }, START_AFTER_3_SECONDS);
+        }, START_NOW, EVERY_2_SECONDS);
     }
 
     @Override

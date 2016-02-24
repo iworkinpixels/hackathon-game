@@ -1,8 +1,5 @@
 package com.hackathon.game.actors.pleeps;
 
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -11,21 +8,25 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.hackathon.game.Constants;
+import com.hackathon.game.util.Helpers;
 
-public abstract class BasePleep extends Actor {
+import java.util.Timer;
+import java.util.TimerTask;
+
+public abstract class BasePleep extends Actor implements Pleep {
 
     private Rectangle boundingBox;
     MoveDirection direction;
     private int velocity;
     private float statetime;
 
-    final private Texture spritemap = new Texture(Gdx.files.internal(Constants.PLEEP_SPRITE_MAP));
-    private Animation walkAnimation;
-    private Animation deathAnimation;
+    final static protected Texture spritemap = new Texture(Gdx.files.internal(Constants.PLEEP_SPRITE_MAP));
+    protected Animation walkAnimation;
+    protected Animation deathAnimation;
 
-    private PleepState pleepState;
-    private static final int FRAME_WIDTH = 256;
-    private static final int FRAME_HEIGHT = 256;
+    protected PleepState pleepState;
+    protected static final int FRAME_WIDTH = 256;
+    protected static final int FRAME_HEIGHT = 256;
     private static final int BOUNCE_MIN = -(Constants.VIEWPORT_WIDTH/4)-(FRAME_WIDTH/4);
     private static final int BOUNCE_MAX = Constants.VIEWPORT_WIDTH;
 
@@ -93,6 +94,12 @@ public abstract class BasePleep extends Actor {
                 break;
             case DYING:
                 animate(batch, deathAnimation, this.direction);
+                new Timer().schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        pleepState = PleepState.DEAD;
+                    }
+                }, 1400);
                 break;
             case DEAD:
                 break;
@@ -155,6 +162,7 @@ public abstract class BasePleep extends Actor {
 
     /********** ACTIONS **************/
 
+    @Override
     public void killPleep() {
         this.pleepState = PleepState.DYING;
         this.velocity = 0;
@@ -168,23 +176,24 @@ public abstract class BasePleep extends Actor {
         }, 1400);
     }
 
+    @Override
     public void birthPleep() {
         // Set the pleep to walking
         this.pleepState = PleepState.WALKING;
         this.statetime = 0;
         // Set a direction for the pleep
-        int randd = randInt(0,1);
+        int randd = Helpers.randomInt(0,1);
         if (randd > 0) {
-            this.direction = this.direction.LEFT;
+            this.direction = MoveDirection.LEFT;
             this.boundingBox.x = BOUNCE_MAX;
             this.velocity = -2;
         } else {
-            this.direction = this.direction.RIGHT;
+            this.direction = MoveDirection.RIGHT;
             this.boundingBox.x = BOUNCE_MIN;
             this.velocity = 2;
         }
         //Set a random Y height for the pleep
-        int ypos = randInt(0,25);
+        int ypos = Helpers.randomInt(0,25);
         this.boundingBox.y = ypos;
         //In your travels, you must have learned that pleeps are mortal, therefore I can clearly not
         //choose the glass in front of you!
@@ -197,12 +206,19 @@ public abstract class BasePleep extends Actor {
         }, 3000);
     }
 
+    @Override
+    public void startRunning() {
+        pleepState = PleepState.RUNNING;
+    }
+
+    @Override
+    public void startWalking() {
+        pleepState = PleepState.WALKING;
+    }
+
     //TODO add more actions - add abstract actions for actions not possessed by each Pleep
 
-    abstract void startRunning();
-
-
-    /********** ******* **************/
+    /********** Regular getters / setters **************/
     public int getVelocity() {
         return this.velocity;
     }
@@ -231,12 +247,12 @@ public abstract class BasePleep extends Actor {
         this.velocity = velocity;
     }
 
-    public static int randInt(int min, int max) {
-        Random rand;
-        rand = new Random();
-
-        int randomNum = rand.nextInt((max - min) + 1) + min;
-
-        return randomNum;
+    public PleepState getPleepState() {
+        return pleepState;
     }
+
+    public void setPleepState(PleepState pleepState) {
+        this.pleepState = pleepState;
+    }
+
 }
