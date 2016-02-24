@@ -62,17 +62,8 @@ public abstract class BasePleep extends Actor implements Pleep {
         return new Animation(0.1f, frames);
     }
 
-    private Animation initWalkAnimation() {
-
-        TextureRegion[][] tmp = TextureRegion.split(spritemap, FRAME_WIDTH, FRAME_HEIGHT);
-        TextureRegion[] walkframes = new TextureRegion[4];
-        walkframes[0] = tmp[0][8];
-        walkframes[1] = tmp[0][9];
-        walkframes[2] = tmp[1][0];
-        walkframes[3] = tmp[1][1];
-
-        return new Animation(0.1f, walkframes);
-    }
+    /** method to be implemented by subclasses */
+    abstract Animation initWalkAnimation();
 
 
     @Override

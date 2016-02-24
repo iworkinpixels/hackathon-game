@@ -16,11 +16,10 @@ public class PleepFactory {
 
     public enum Type {
         COMMON,
-//        SCIENTIST,
+        SCIENTIST,
         SOLDIER;
 
-        private static final List<Type> VALUES =
-                Collections.unmodifiableList(Arrays.asList(values()));
+        private static final List<Type> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
         private static final int SIZE = VALUES.size();
         private static final Random RANDOM = new Random();
 
@@ -29,21 +28,19 @@ public class PleepFactory {
         }
     }
 
-    public Pleep createPleep(String pleepType){
-        if(pleepType == null){
-            return null;
+    public Pleep createPleep(Type pleepType){
+
+        switch (pleepType) {
+            case COMMON:
+                return new CommonPleep();
+            case SOLDIER:
+                return new SoldierPleep();
+            case SCIENTIST:
+                return new ScientistPleep();
+
+            default:
+                throw new EnumConstantNotPresentException(Type.class, pleepType.toString());
         }
-        if(pleepType.equalsIgnoreCase(CommonPleep.FACTORY_NAME)){
-            return new CommonPleep();
-
-        } else if(pleepType.equalsIgnoreCase(SoldierPleep.FACTORY_NAME)){
-            return new SoldierPleep();
-
-        } else if(pleepType.equalsIgnoreCase(ScientistPleep.FACTORY_NAME)){
-            return new ScientistPleep();
-        }
-
-        return null;
     }
 
     public Pleep createRandomPleep() {
@@ -55,6 +52,8 @@ public class PleepFactory {
                 return new CommonPleep();
             case SOLDIER:
                 return new SoldierPleep();
+            case SCIENTIST:
+                return new ScientistPleep();
 
             default:
                 throw new EnumConstantNotPresentException(Type.class, randomType.toString());

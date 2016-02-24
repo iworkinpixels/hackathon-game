@@ -8,15 +8,12 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  */
 public class SoldierPleep extends BasePleep {
 
-    public static final String FACTORY_NAME = "SOLDIER_PLEEP";
-
     public SoldierPleep() {
         super();
-        newWalkAnimation();
     }
 
-    private void newWalkAnimation() {
-
+    @Override
+    Animation initWalkAnimation() {
         TextureRegion[] walkframes = new TextureRegion[7];
         walkframes[0] = spritePosition[5][3];
         walkframes[1] = spritePosition[5][4];
@@ -26,6 +23,6 @@ public class SoldierPleep extends BasePleep {
         walkframes[5] = spritePosition[5][8];
         walkframes[6] = spritePosition[5][9];
 
-        this.walkAnimation = new Animation(0.1f, walkframes);
+        return new Animation(0.1f, walkframes);
     }
 }

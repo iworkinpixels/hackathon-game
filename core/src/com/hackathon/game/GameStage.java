@@ -18,6 +18,7 @@ public class GameStage extends Stage {
     private static final float START_AFTER_3_SECONDS = 3f;
     private static final float START_AFTER_1_SECOND = 3f;
     private static final float EVERY_2_SECONDS = 2L;
+    private static final float EVERY_1_SECOND = 1L;
 
     public GameStage() {
         addActor(new BackgroundSky());
@@ -32,7 +33,7 @@ public class GameStage extends Stage {
                 Pleep newPleep = pleepFactory.createRandomPleep();
                 addActor((BasePleep) newPleep);
             }
-        }, START_NOW, EVERY_2_SECONDS);
+        }, START_NOW, EVERY_1_SECOND);
     }
 
     @Override
