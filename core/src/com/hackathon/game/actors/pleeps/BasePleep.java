@@ -52,11 +52,11 @@ public abstract class BasePleep extends Actor implements Pleep {
 
     private Animation initDeathAnimation() {
 
-        TextureRegion[][] tmp = TextureRegion.split(spritemap, FRAME_WIDTH, FRAME_HEIGHT);
         TextureRegion[] frames = new TextureRegion[20];
+
         for(int x = 0; x < 10; x++) {
-            frames[x] = tmp[11][x];
-            frames[x +10] = tmp[12][x];
+            frames[x] = spritePosition[11][x];
+            frames[x +10] = spritePosition[12][x];
         }
 
         return new Animation(0.1f, frames);
@@ -66,6 +66,13 @@ public abstract class BasePleep extends Actor implements Pleep {
     abstract Animation initWalkAnimation();
 
 
+    /**
+     * draw function gets called every frame
+     * don't put heavy methods here
+     *
+     * @param batch
+     * @param parentAlpha
+     */
     @Override
     public void draw(Batch batch, float parentAlpha) {
 
@@ -95,13 +102,6 @@ public abstract class BasePleep extends Actor implements Pleep {
 
             case DYING:
                 animate(batch, deathAnimation, this.direction);
-                //wait 1.5 sec to finish animation
-                new Timer().schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        pleepState = PleepState.DEAD;
-                    }
-                }, DURATION_OF_DEATH_ANIMATION);
                 break;
 
             case DEAD:
@@ -119,6 +119,7 @@ public abstract class BasePleep extends Actor implements Pleep {
 
         if ((this.direction == MoveDirection.RIGHT && this.getX() > BOUNCE_MAX)
                 || (this.direction == MoveDirection.LEFT && this.getX() < BOUNCE_MIN)) {
+
             this.velocity = -this.velocity;
             this.direction = direction.getOppositeDirection();
 
@@ -169,6 +170,14 @@ public abstract class BasePleep extends Actor implements Pleep {
     public void killPleep() {
         this.pleepState = PleepState.DYING;
         this.velocity = 0;
+
+        //wait 1.5 sec to finish animation
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                pleepState = PleepState.DEAD;
+            }
+        }, DURATION_OF_DEATH_ANIMATION);
     }
 
     @Override
