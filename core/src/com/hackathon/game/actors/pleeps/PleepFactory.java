@@ -45,19 +45,7 @@ public class PleepFactory {
 
     public Pleep createRandomPleep() {
 
-        Type randomType = Type.randomType();
-
-        switch (randomType) {
-            case COMMON:
-                return new CommonPleep();
-            case SOLDIER:
-                return new SoldierPleep();
-            case SCIENTIST:
-                return new ScientistPleep();
-
-            default:
-                throw new EnumConstantNotPresentException(Type.class, randomType.toString());
-        }
+        return createPleep(Type.randomType());
     }
 
 }
