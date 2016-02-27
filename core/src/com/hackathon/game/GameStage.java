@@ -5,6 +5,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.hackathon.game.actors.pleeps.BasePleep;
 import com.hackathon.game.actors.pleeps.Pleep;
 import com.hackathon.game.actors.pleeps.PleepFactory;
+import com.hackathon.game.actors.plonster.Plonster;
 import com.hackathon.game.actors.scene.BackgroundCity;
 import com.hackathon.game.actors.scene.BackgroundSky;
 
@@ -34,6 +35,9 @@ public class GameStage extends Stage {
                 addActor((BasePleep) newPleep);
             }
         }, START_NOW, EVERY_1_SECOND);
+
+        Plonster plonster = new Plonster();
+        plonster.emerge();
     }
 
     @Override

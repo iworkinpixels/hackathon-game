@@ -10,4 +10,5 @@ public class Constants {
     public static final String BACKGROUND_SKY_IMAGE_PATH = "images/bg/sky.gif";
     public static final String BACKGROUND_CITY_IMAGE_PATH = "images/bg/city.png";
     public static final String PLEEP_SPRITE_MAP = "images/sprite-map.png";
+    public static final String PLONSTER_SPRITE_MAP = "images/sprite-map-plonster.png";
 }

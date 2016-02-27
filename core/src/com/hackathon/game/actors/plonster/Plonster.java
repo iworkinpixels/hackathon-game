@@ -10,7 +10,7 @@ import com.hackathon.game.actors.plonster.part.Mouth;
 /**
  * Created by tjago on 2016-02-22.
  */
-public class Plonster extends Actor {
+public class Plonster extends Actor implements PlonsterInterface {
 
     private PlonsterState state;
 
@@ -26,7 +26,7 @@ public class Plonster extends Actor {
     }
 
     private void assemblePlonster() {
-
+        this.body = new Body();
     }
 
     @Override
@@ -38,10 +38,28 @@ public class Plonster extends Actor {
             case LANDING:
 //                animate(batch, walkAnimation, this.direction);
                 break;
+            case IDLE:
+
+                break;
             default:
                 // this block should not be entered ever!
                 break;
         }
+
+    }
+
+    @Override
+    public void lickMouth() {
+
+    }
+
+    @Override
+    public void narrowEyes() {
+
+    }
+
+    @Override
+    public void emerge() {
 
     }
 }

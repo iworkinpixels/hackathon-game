@@ -11,6 +11,6 @@ public interface PlonsterInterface {
 
     void narrowEyes();
 
-    /** spawn Plonster and bring to scene location */
-    void spawn();
+    /** emerge Plonster and bring to scene location */
+    void emerge();
 }
