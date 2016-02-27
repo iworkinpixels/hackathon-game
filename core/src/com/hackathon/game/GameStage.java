@@ -41,5 +41,14 @@ public class GameStage extends Stage {
         super.draw();
     }
 
-
+    /**
+     * Calls the Actor.act(float) method for each actor in the stage.
+     * Typically called each frame.
+     * This method also fires enter and exit events.
+     *
+     * @param delta Time in seconds since the last frame. */
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+    }
 }

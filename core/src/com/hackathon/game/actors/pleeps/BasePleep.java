@@ -76,8 +76,6 @@ public abstract class BasePleep extends Actor implements Pleep {
     @Override
     public void draw(Batch batch, float parentAlpha) {
 
-        movementCalculations();
-
         switch (pleepState) {
 
             case WALKING:
@@ -113,8 +111,14 @@ public abstract class BasePleep extends Actor implements Pleep {
 
     }
 
-    private void movementCalculations() {
-        float delta = Gdx.graphics.getDeltaTime();
+    /** @param delta Time in seconds since the last frame. */
+    @Override
+    public void act(float delta) {
+
+        movementCalculations(delta);
+    }
+
+    private void movementCalculations(float delta) {
         statetime += delta;
 
         if ((this.direction == MoveDirection.RIGHT && this.getX() > BOUNCE_MAX)
