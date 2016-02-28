@@ -13,14 +13,15 @@ public class Body extends BodyPart {
     public Body() {
 
         this.bodyAnimation = initBodyAnimation();
+        setScale(0.3f);
     }
 
-    private Animation initBodyAnimation() {
-        TextureRegion[] frames = new TextureRegion[4];
+    public Animation initBodyAnimation() {
+        TextureRegion[] frames = new TextureRegion[3];
         frames[0] = spritePosition[2][0];
         frames[1] = spritePosition[2][1];
         frames[2] = spritePosition[2][2];
 
-        return new Animation(0.1f, frames);
+        return new Animation(0.4f, frames);
     }
 }

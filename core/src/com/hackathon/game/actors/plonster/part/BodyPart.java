@@ -16,4 +16,14 @@ public class BodyPart {
     /** shared Texture resource among objects, should be static */
     final static protected Texture spritemap = new Texture(Gdx.files.internal(Constants.PLONSTER_SPRITE_MAP));
     static protected TextureRegion[][] spritePosition = TextureRegion.split(spritemap, FRAME_WIDTH, FRAME_HEIGHT);
+
+    private float scale = 1f;
+
+    public float getScale() {
+        return scale;
+    }
+
+    public void setScale(float scale) {
+        this.scale = scale;
+    }
 }

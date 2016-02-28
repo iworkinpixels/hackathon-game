@@ -13,4 +13,6 @@ public interface PlonsterInterface {
 
     /** emerge Plonster and bring to scene location */
     void emerge();
+
+    void becomeIdle();
 }
