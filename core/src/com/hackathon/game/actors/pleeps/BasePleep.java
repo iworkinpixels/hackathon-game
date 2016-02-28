@@ -25,6 +25,7 @@ public abstract class BasePleep extends Actor implements Pleep {
      */
     final static protected Texture spritemap = new Texture(Gdx.files.internal(Constants.PLEEP_SPRITE_MAP));
     public static final int DURATION_OF_DEATH_ANIMATION = 1400;
+    public static final int AFTER_6_SECONDS = 6000;
     static protected TextureRegion[][] spritePosition = TextureRegion.split(spritemap, FRAME_WIDTH, FRAME_HEIGHT);
 
     MoveDirection direction;
@@ -226,7 +227,7 @@ public abstract class BasePleep extends Actor implements Pleep {
             this.velocity = 2;
         }
         //Set a random Y height for the pleep
-        int ypos = Helpers.randomInt(0, 25);
+        int ypos = Helpers.randomInt(0, 90);
         this.boundingBox.y = ypos;
         //In your travels, you must have learned that pleeps are mortal, therefore I can clearly not
         //choose the glass in front of you!
@@ -236,7 +237,7 @@ public abstract class BasePleep extends Actor implements Pleep {
             public void run() {
                 killPleep();
             }
-        }, 3000);
+        }, AFTER_6_SECONDS);
     }
 
     @Override
