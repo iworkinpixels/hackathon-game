@@ -36,7 +36,7 @@ public class GameStage extends Stage {
             }
         }, START_NOW, EVERY_1_SECOND);
 
-        addActor(new Plonster());
+        Plonster plonster = new Plonster(this);
 //        plonster.emerge();
     }
 
