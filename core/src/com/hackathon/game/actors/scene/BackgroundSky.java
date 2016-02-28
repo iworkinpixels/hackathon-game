@@ -15,7 +15,7 @@ public class BackgroundSky extends Actor {
     private final TextureRegion textureRegion;
     private Rectangle textureRegionBounds1;
     private Rectangle textureRegionBounds2;
-    private int speed = 100;
+    private int speed = 8;
 
     public BackgroundSky() {
         textureRegion = new TextureRegion(new Texture(Gdx.files.internal(Constants.BACKGROUND_SKY_IMAGE_PATH)));

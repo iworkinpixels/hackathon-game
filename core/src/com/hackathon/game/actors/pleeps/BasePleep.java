@@ -15,12 +15,14 @@ import java.util.TimerTask;
 
 public abstract class BasePleep extends Actor implements Pleep {
 
-    protected static final int FRAME_WIDTH  = 256;
+    protected static final int FRAME_WIDTH = 256;
     protected static final int FRAME_HEIGHT = 256;
-    protected static final int BOUNCE_MIN   = -(Constants.VIEWPORT_WIDTH/4)-(FRAME_WIDTH/4);
-    protected static final int BOUNCE_MAX   = Constants.VIEWPORT_WIDTH;
+    protected static final int BOUNCE_MIN = -(Constants.VIEWPORT_WIDTH / 4) - (FRAME_WIDTH / 4);
+    protected static final int BOUNCE_MAX = Constants.VIEWPORT_WIDTH;
 
-    /** shared Texture resource among objects, should be static */
+    /**
+     * shared Texture resource among objects, should be static
+     */
     final static protected Texture spritemap = new Texture(Gdx.files.internal(Constants.PLEEP_SPRITE_MAP));
     public static final int DURATION_OF_DEATH_ANIMATION = 1400;
     static protected TextureRegion[][] spritePosition = TextureRegion.split(spritemap, FRAME_WIDTH, FRAME_HEIGHT);
@@ -52,17 +54,36 @@ public abstract class BasePleep extends Actor implements Pleep {
 
     private Animation initDeathAnimation() {
 
-        TextureRegion[] frames = new TextureRegion[20];
+        TextureRegion[] frames = new TextureRegion[21];
+        frames[0] = spritePosition[12][0];
+        frames[1] = spritePosition[12][1];
+        frames[2] = spritePosition[12][0];
+        frames[3] = spritePosition[12][1];
+        frames[4] = spritePosition[12][2];
+        frames[5] = spritePosition[12][3];
+        frames[6] = spritePosition[12][4];
+        frames[7] = spritePosition[12][5];
+        frames[8] = spritePosition[12][6];
+        frames[9] = spritePosition[12][7];
+        frames[10] = spritePosition[12][8];
+        frames[11] = spritePosition[12][9];
+        frames[12] = spritePosition[13][0];
+        frames[13] = spritePosition[13][1];
+        frames[14] = spritePosition[13][2];
+        frames[15] = spritePosition[13][3];
+        frames[16] = spritePosition[13][4];
+        frames[17] = spritePosition[13][5];
+        frames[18] = spritePosition[13][6];
+        frames[19] = spritePosition[13][7];
+        frames[20] = spritePosition[13][8];
 
-        for(int x = 0; x < 10; x++) {
-            frames[x] = spritePosition[11][x];
-            frames[x +10] = spritePosition[12][x];
-        }
 
-        return new Animation(0.1f, frames);
+        return new Animation(0.04f, frames);
     }
 
-    /** method to be implemented by subclasses */
+    /**
+     * method to be implemented by subclasses
+     */
     abstract Animation initWalkAnimation();
 
 
@@ -111,7 +132,9 @@ public abstract class BasePleep extends Actor implements Pleep {
 
     }
 
-    /** @param delta Time in seconds since the last frame. */
+    /**
+     * @param delta Time in seconds since the last frame.
+     */
     @Override
     public void act(float delta) {
 
@@ -128,9 +151,9 @@ public abstract class BasePleep extends Actor implements Pleep {
             this.direction = direction.getOppositeDirection();
 
             if (this.direction == MoveDirection.RIGHT) {
-                this.boundingBox.x += FRAME_WIDTH/2;
-            }else {
-                this.boundingBox.x -= FRAME_WIDTH/2;
+                this.boundingBox.x += FRAME_WIDTH / 2;
+            } else {
+                this.boundingBox.x -= FRAME_WIDTH / 2;
             }
         }
         this.boundingBox.x += this.velocity;
@@ -150,16 +173,16 @@ public abstract class BasePleep extends Actor implements Pleep {
                     batch.draw(animation.getKeyFrame(this.statetime, true),
                             this.getX(), //the x-coordinate in screen space
                             this.getY(), //the y-coordinate in screen space
-                            FRAME_WIDTH / 2, //width
-                            FRAME_HEIGHT / 2 // height
+                            FRAME_WIDTH / 4, //width
+                            FRAME_HEIGHT / 4 // height
                     );
                 }
                 if (direction == MoveDirection.LEFT) {
                     batch.draw(animation.getKeyFrame(this.statetime, true),
                             this.getX() + FRAME_WIDTH, //the x-coordinate in screen space
                             this.getY(), //the y-coordinate in screen space
-                            -FRAME_WIDTH / 2, //width
-                            FRAME_HEIGHT / 2 // height
+                            -FRAME_WIDTH / 4, //width
+                            FRAME_HEIGHT / 4 // height
                     );
                 }
                 break;
@@ -168,7 +191,9 @@ public abstract class BasePleep extends Actor implements Pleep {
         }
     }
 
-    /********** ACTIONS **************/
+    /**********
+     * ACTIONS
+     **************/
 
     @Override
     public void killPleep() {
@@ -190,7 +215,7 @@ public abstract class BasePleep extends Actor implements Pleep {
         this.pleepState = PleepState.WALKING;
         this.statetime = 0;
         // Set a direction for the pleep
-        int randd = Helpers.randomInt(0,1);
+        int randd = Helpers.randomInt(0, 1);
         if (randd > 0) {
             this.direction = MoveDirection.LEFT;
             this.boundingBox.x = BOUNCE_MAX;
@@ -201,7 +226,7 @@ public abstract class BasePleep extends Actor implements Pleep {
             this.velocity = 2;
         }
         //Set a random Y height for the pleep
-        int ypos = Helpers.randomInt(0,25);
+        int ypos = Helpers.randomInt(0, 25);
         this.boundingBox.y = ypos;
         //In your travels, you must have learned that pleeps are mortal, therefore I can clearly not
         //choose the glass in front of you!
@@ -226,7 +251,9 @@ public abstract class BasePleep extends Actor implements Pleep {
 
     //TODO add more actions - add abstract actions for actions not possessed by each Pleep
 
-    /********** Regular getters / setters **************/
+    /**********
+     * Regular getters / setters
+     **************/
     public int getVelocity() {
         return this.velocity;
     }
