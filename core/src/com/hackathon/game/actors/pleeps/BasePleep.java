@@ -24,8 +24,8 @@ public abstract class BasePleep extends Actor implements Pleep {
      * shared Texture resource among objects, should be static
      */
     final static protected Texture spritemap = new Texture(Gdx.files.internal(Constants.PLEEP_SPRITE_MAP));
-    public static final int DURATION_OF_DEATH_ANIMATION = 1400;
-    public static final int AFTER_6_SECONDS = 6000;
+    public static final int DURATION_OF_DEATH_ANIMATION = 840;
+    public static final int AFTER_5_SECONDS = 5000;
     static protected TextureRegion[][] spritePosition = TextureRegion.split(spritemap, FRAME_WIDTH, FRAME_HEIGHT);
 
     MoveDirection direction;
@@ -200,6 +200,7 @@ public abstract class BasePleep extends Actor implements Pleep {
     public void killPleep() {
         this.pleepState = PleepState.DYING;
         this.velocity = 0;
+        this.statetime = 0;
 
         //wait 1.5 sec to finish animation
         new Timer().schedule(new TimerTask() {
@@ -237,7 +238,7 @@ public abstract class BasePleep extends Actor implements Pleep {
             public void run() {
                 killPleep();
             }
-        }, AFTER_6_SECONDS);
+        }, AFTER_5_SECONDS);
     }
 
     @Override
