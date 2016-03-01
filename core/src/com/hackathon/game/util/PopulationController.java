@@ -6,6 +6,8 @@ import com.hackathon.game.actors.pleeps.BasePleep;
 import com.hackathon.game.actors.pleeps.Pleep;
 import com.hackathon.game.actors.pleeps.PleepFactory;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Random;
 
 /**
@@ -74,4 +76,18 @@ public class PopulationController {
         }
     }
 
+
+    public static void pleepKilledNotification() {
+        currentPleepsNumber--;
+    }
+
+    /**
+     * Update z-index after creating new actor in scene
+     * Not so trivial as it seems
+     * @see http://gamedev.stackexchange.com/questions/80068/libgdx-z-index-for-groups
+     * @see http://stackoverflow.com/questions/16129903/how-do-you-sort-actors-in-a-libgdx-stage
+     */
+    public static void updateZIndexforPleeps() {
+        Collections.sort(Arrays.asList(stage.getActors().toArray()), new ActorComparator());
+    }
 }

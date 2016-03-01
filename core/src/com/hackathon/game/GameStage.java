@@ -25,7 +25,7 @@ public class GameStage extends Stage {
 
         PopulationController.getInstance().setStage(this).setMax(10);
 
-        /** scheduler - add Pleep to stage every 2 secs */
+        /** scheduler - run the population controller to regulate Pleeps herd */
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
