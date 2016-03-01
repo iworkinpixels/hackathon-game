@@ -11,6 +11,8 @@ public enum PleepState {
 
     POINTING,
 
+    PANICING,
+
     /* only Policeman BasePleep */
     STOPPING,
 

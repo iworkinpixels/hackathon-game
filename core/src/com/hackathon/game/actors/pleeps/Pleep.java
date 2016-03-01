@@ -12,7 +12,7 @@ public interface Pleep {
      void  killPleep();
      void  startRunning();
      void  startWalking();
-//    void startPanicing();
+     void startPanicing();
 //    void ThrowBomb();
 //    void fingerMonster();
 }

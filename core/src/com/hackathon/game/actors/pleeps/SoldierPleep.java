@@ -30,7 +30,7 @@ public class SoldierPleep extends BasePleep {
         return new Animation(0.1f, throwframes);
     }
 
-
+    @Override
     Animation initPanicAnimation() {
         TextureRegion[] panicframes = new TextureRegion[4];
         panicframes[0] = spritePosition[5][2];

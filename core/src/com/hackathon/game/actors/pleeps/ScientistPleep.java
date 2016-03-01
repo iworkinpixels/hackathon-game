@@ -21,5 +21,10 @@ public class ScientistPleep extends BasePleep {
         return  new Animation(0.1f, walkframes);
     }
 
+    @Override
+    Animation initPanicAnimation() {
+        return null; //TODO set panic animation if exists
+    }
+
     //TODO add more actions
 }

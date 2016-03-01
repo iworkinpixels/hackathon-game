@@ -25,7 +25,6 @@ public abstract class BasePleep extends Actor implements Pleep {
      */
     final static protected Texture spritemap = new Texture(Gdx.files.internal(Constants.PLEEP_SPRITE_MAP));
     public static final int DURATION_OF_DEATH_ANIMATION = 840;
-    public static final int AFTER_5_SECONDS = 5000;
     static protected TextureRegion[][] spritePosition = TextureRegion.split(spritemap, FRAME_WIDTH, FRAME_HEIGHT);
 
     MoveDirection direction;
@@ -34,6 +33,7 @@ public abstract class BasePleep extends Actor implements Pleep {
     private float statetime;
 
     protected Animation walkAnimation;
+    protected Animation panicAnimation;
     protected Animation deathAnimation;
 
     protected PleepState pleepState;
@@ -48,6 +48,7 @@ public abstract class BasePleep extends Actor implements Pleep {
         this.statetime = 0f;
 
         walkAnimation = initWalkAnimation();
+        panicAnimation = initPanicAnimation();
         deathAnimation = initDeathAnimation();
 
         birthPleep();
@@ -85,7 +86,9 @@ public abstract class BasePleep extends Actor implements Pleep {
     /**
      * method to be implemented by subclasses
      */
+
     abstract Animation initWalkAnimation();
+    abstract Animation initPanicAnimation();
 
 
     /**
@@ -106,6 +109,10 @@ public abstract class BasePleep extends Actor implements Pleep {
 
             case RUNNING:
                 //TODO put animation here
+                break;
+
+            case PANICING:
+                animate(batch, panicAnimation, this.direction);
                 break;
 
             case THROWING:
@@ -170,6 +177,7 @@ public abstract class BasePleep extends Actor implements Pleep {
         switch (pleepState) {
             case WALKING:
             case DYING:
+            case PANICING:
                 if (direction == MoveDirection.RIGHT) {
                     batch.draw(animation.getKeyFrame(this.statetime, true),
                             this.getX(), //the x-coordinate in screen space
@@ -198,17 +206,20 @@ public abstract class BasePleep extends Actor implements Pleep {
 
     @Override
     public void killPleep() {
-        this.pleepState = PleepState.DYING;
-        this.velocity = 0;
-        this.statetime = 0;
+        if (!pleepState.equals(PleepState.DEAD)) {
 
-        //wait 1.5 sec to finish animation
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                pleepState = PleepState.DEAD;
-            }
-        }, DURATION_OF_DEATH_ANIMATION);
+            this.pleepState = PleepState.DYING;
+            this.velocity = 0;
+            this.statetime = 0;
+
+            //wait 1.5 sec to finish animation
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    pleepState = PleepState.DEAD;
+                }
+            }, DURATION_OF_DEATH_ANIMATION);
+        }
     }
 
     @Override
@@ -230,15 +241,7 @@ public abstract class BasePleep extends Actor implements Pleep {
         //Set a random Y height for the pleep
         int ypos = Helpers.randomInt(0, 90);
         this.boundingBox.y = ypos;
-        //In your travels, you must have learned that pleeps are mortal, therefore I can clearly not
-        //choose the glass in front of you!
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                killPleep();
-            }
-        }, AFTER_5_SECONDS);
+
     }
 
     @Override
@@ -251,14 +254,16 @@ public abstract class BasePleep extends Actor implements Pleep {
         pleepState = PleepState.WALKING;
     }
 
-    //TODO add more actions - add abstract actions for actions not possessed by each Pleep
+    @Override
+    public void startPanicing() {
+
+        statetime = 0;
+        pleepState = PleepState.PANICING;
+    }
 
     /**********
-     * Regular getters / setters
+     * Regular getters
      **************/
-    public int getVelocity() {
-        return this.velocity;
-    }
 
     public float getX() {
         return this.boundingBox.getX();
@@ -272,24 +277,12 @@ public abstract class BasePleep extends Actor implements Pleep {
         return this.boundingBox;
     }
 
-    public void setPosition(int x, int y) {
-        this.boundingBox.setPosition(x, y);
-    }
-
-    public void setSize(int width, int height) {
-        this.boundingBox.setSize(width, height);
-    }
-
-    public void setVelocity(int velocity) {
-        this.velocity = velocity;
-    }
-
     public PleepState getPleepState() {
         return pleepState;
     }
 
-    public void setPleepState(PleepState pleepState) {
-        this.pleepState = pleepState;
+    public int getVelocity() {
+        return this.velocity;
     }
 
 }
