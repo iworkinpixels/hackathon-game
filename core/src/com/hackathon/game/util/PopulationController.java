@@ -82,7 +82,7 @@ public class PopulationController {
     }
 
     /**
-     * Update z-index after creating new actor in scene
+     * Update z-index after creating a new actor in scene
      * Not so trivial as it seems
      * @see http://gamedev.stackexchange.com/questions/80068/libgdx-z-index-for-groups
      * @see http://stackoverflow.com/questions/16129903/how-do-you-sort-actors-in-a-libgdx-stage

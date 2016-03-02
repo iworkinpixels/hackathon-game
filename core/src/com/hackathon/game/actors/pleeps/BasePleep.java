@@ -241,9 +241,7 @@ public abstract class BasePleep extends Actor implements Pleep {
 
     @Override
     public void birthPleep() {
-        // Set the pleep to walking
-        this.pleepState = PleepState.WALKING;
-        this.statetime = 0;
+        startWalking();
     }
 
     @Override
@@ -253,14 +251,17 @@ public abstract class BasePleep extends Actor implements Pleep {
 
     @Override
     public void startWalking() {
-        pleepState = PleepState.WALKING;
+        this.pleepState = PleepState.WALKING;
+        this.velocity = 2;
+        this.statetime = 0;
     }
 
     @Override
     public void startPanicing() {
 
-        statetime = 0;
         pleepState = PleepState.PANICING;
+        this.velocity = 3; //when panicing, increase speed
+        statetime = 0;
     }
 
     /**********
