@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Timer;
 import com.hackathon.game.actors.scene.BackgroundCity;
 import com.hackathon.game.actors.scene.BackgroundSky;
+import com.hackathon.game.util.SoundsController;
 import com.hackathon.game.util.PopulationController;
 
 /**
@@ -22,6 +23,9 @@ public class GameStage extends Stage {
     public GameStage() {
         addActor(new BackgroundSky());
         addActor(new BackgroundCity());
+
+        SoundsController musicController = new SoundsController();
+        musicController.playBgMusic();
 
         PopulationController.getInstance().setStage(this).setMax(10);
 

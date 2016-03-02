@@ -9,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.hackathon.game.Constants;
 import com.hackathon.game.util.Helpers;
 import com.hackathon.game.util.PopulationController;
+import com.hackathon.game.util.Sounds;
+import com.hackathon.game.util.SoundsController;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -229,11 +231,19 @@ public abstract class BasePleep extends Actor implements Pleep {
             this.velocity = 0;
             this.statetime = 0;
 
+            SoundsController soundsController = new SoundsController();
+            soundsController.playSound(Sounds.FEMALE_SCREAM);
+
             //wait to finish animation
             new Timer().schedule(new TimerTask() {
                 @Override
                 public void run() {
                     pleepState = PleepState.DEAD;
+                    try {
+                        this.finalize();
+                    } catch (Throwable throwable) {
+                        throwable.printStackTrace();
+                    }
                 }
             }, DURATION_OF_DEATH_ANIMATION);
         }
