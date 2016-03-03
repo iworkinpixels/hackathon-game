@@ -28,7 +28,7 @@ public class PleepFactory {
         }
     }
 
-    public Pleep createPleep(Type pleepType){
+    public synchronized Pleep createPleep(Type pleepType){
 
         switch (pleepType) {
             case COMMON:

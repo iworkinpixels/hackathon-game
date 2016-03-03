@@ -1,8 +1,8 @@
 package com.hackathon.game.util;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.hackathon.game.actors.pleeps.BasePleep;
 import com.hackathon.game.actors.pleeps.Pleep;
 import com.hackathon.game.actors.pleeps.PleepFactory;
 
@@ -18,25 +18,28 @@ import java.util.Random;
  */
 public class PopulationController {
 
-//    public static final int POPULATION_LIMIT = 10;
+    public static final String LOGTAG ="UTIL";
     private static PopulationController instance;
 
-    private static Stage stage;
-    private static PleepFactory pleepFactory;
-    private static int currentPleepsNumber;
-    private static int maxPleepsPopulation;
-    private static long timeFromInit;
+    private PleepFactory pleepFactory;
+    private Stage stage;
+    private int currentPleepsNumber;
+    private int maxPleepsPopulation;
+    private long timeFromInit;
 
     public PopulationController() {
+        Gdx.app.log(LOGTAG, "created Population Controller");
         currentPleepsNumber = 0;
         pleepFactory = new PleepFactory();
+        timeFromInit = System.currentTimeMillis();
     }
 
-    public static void regulatePopulation() {
+    public synchronized void regulatePopulation() {
 
-        if (currentPleepsNumber < maxPleepsPopulation) {
+        if (currentPleepsNumber <= maxPleepsPopulation) {
+            Gdx.app.log(LOGTAG, "Pleeps population: " + currentPleepsNumber + " , increasing: +1");
             Pleep newPleep = pleepFactory.createRandomPleep();
-            stage.addActor((BasePleep)newPleep);
+            stage.addActor((Actor) newPleep);
 
             currentPleepsNumber++;
         }
@@ -44,11 +47,9 @@ public class PopulationController {
 
     public static PopulationController getInstance() {
         if (instance == null) {
-            timeFromInit = System.currentTimeMillis();
-            return new PopulationController();
-        } else {
-            return instance;
+            instance = new PopulationController();
         }
+        return instance;
     }
 
     public PopulationController setMax(int num) {
@@ -61,23 +62,26 @@ public class PopulationController {
         return this;
     }
 
-    /** random kill ! */
-    public static void russianRoulette() {
+    /** random kill */
+    public synchronized void russianRoulette() {
 
         Random RANDOM = new Random(); //start the roulette
-        int actorsNumber = stage.getActors().size;
+        int actorsNumber = stage.getActors().size; //somehow Actors size array is double than actors actually inserted..
 
-        if (actorsNumber > 0 && currentPleepsNumber == maxPleepsPopulation) {
+        if (currentPleepsNumber >= maxPleepsPopulation) {
             Actor chosenActor = stage.getActors().get(RANDOM.nextInt(actorsNumber));
 
+            Gdx.app.log(LOGTAG, "actorsNumber: " + actorsNumber);
+
             if(chosenActor instanceof Pleep) {
+                Gdx.app.log(LOGTAG, "Russian roulette - killPleep");
                 ((Pleep)chosenActor).killPleep();
             }
         }
     }
 
 
-    public static void pleepKilledNotification() {
+    public void pleepKilledNotification() {
         currentPleepsNumber--;
     }
 
@@ -87,7 +91,7 @@ public class PopulationController {
      * @link http://gamedev.stackexchange.com/questions/80068/libgdx-z-index-for-groups
      * @link http://stackoverflow.com/questions/16129903/how-do-you-sort-actors-in-a-libgdx-stage
      */
-    public static void updateZIndexforPleeps() {
+    public void updateZIndexforPleeps() {
         Collections.sort(Arrays.asList(stage.getActors().toArray()), new ActorComparator());
     }
 }

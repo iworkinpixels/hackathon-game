@@ -18,7 +18,6 @@ public class GameStage extends Stage {
     private static final float START_AFTER_1_SECOND = 3f;
     private static final float EVERY_2_SECONDS = 2L;
     private static final float EVERY_1_SECOND = 1L;
-    private static final float EVERY_10_SECOND = 1L;
 
     public GameStage() {
         addActor(new BackgroundSky());
@@ -33,7 +32,7 @@ public class GameStage extends Stage {
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
-                PopulationController.regulatePopulation();
+                PopulationController.getInstance().regulatePopulation();
             }
         }, START_NOW, EVERY_1_SECOND);
 
@@ -41,9 +40,9 @@ public class GameStage extends Stage {
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
-                PopulationController.russianRoulette();
+                PopulationController.getInstance().russianRoulette();
             }
-        }, START_AFTER_5_SECONDS, EVERY_10_SECOND);
+        }, START_AFTER_5_SECONDS, EVERY_2_SECONDS);
     }
 
     @Override

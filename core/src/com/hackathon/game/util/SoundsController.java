@@ -17,6 +17,9 @@ import com.hackathon.game.Constants;
  */
 public class SoundsController {
 
+    public static final float FULL_VOLUME = 1.0f;
+    public static final float HALF_VOLUME = 0.5f;
+    public static final float ONE_TENTH_VOLUME = 0.1f;
     private final boolean LOOP = true;
     private final boolean PLAY_ONCE = false;
     private Music music;
@@ -26,15 +29,13 @@ public class SoundsController {
     }
 
     public void playBgMusic() {
-        playFile(Gdx.files.internal(Constants.BACKGROUND_MUSIC_FILE), LOOP);
+        playFile(Gdx.files.internal(Constants.BACKGROUND_MUSIC_FILE), FULL_VOLUME, LOOP);
     }
 
-    private void playFile(FileHandle fileHandle, boolean looped) {
-
-        System.out.println("Playing sound: " + fileHandle.toString());
+    private void playFile(FileHandle fileHandle, float volume, boolean looped) {
 
         this.music = Gdx.audio.newMusic(fileHandle);
-        this.music.setVolume(0.3f);
+        this.music.setVolume(volume);
         this.music.setLooping(looped);
         this.music.setOnCompletionListener(new Music.OnCompletionListener() {
             @Override
@@ -48,7 +49,7 @@ public class SoundsController {
     public void playSound(Sounds soundChoice) {
         switch (soundChoice) {
             case FEMALE_SCREAM:
-                playFile(Gdx.files.internal(Constants.SCREAM_FEMALE), PLAY_ONCE);
+                playFile(Gdx.files.internal(Constants.SCREAM_FEMALE), ONE_TENTH_VOLUME, PLAY_ONCE);
                 break;
             default:
                 throw new EnumConstantNotPresentException(Sounds.class, soundChoice.toString());

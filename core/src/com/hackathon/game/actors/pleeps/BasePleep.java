@@ -17,19 +17,21 @@ import java.util.TimerTask;
 
 public abstract class BasePleep extends Actor implements Pleep {
 
-    protected static final int FRAME_WIDTH = 256;
-    public static final int ANIMATION_WIDTH_SIZE = FRAME_WIDTH / 4;
+    protected static final int FRAME_WIDTH  = 256;
     protected static final int FRAME_HEIGHT = 256;
+    public static final int ANIMATION_WIDTH_SIZE  = FRAME_WIDTH / 4;
     public static final int ANIMATION_HEIGHT_SIZE = FRAME_HEIGHT / 4;
     protected static final int BOUNCE_MIN = -(Constants.VIEWPORT_WIDTH / 4) - (FRAME_WIDTH / 4);
     protected static final int BOUNCE_MAX = Constants.VIEWPORT_WIDTH;
+
+    private static final String LOGTAG = "BASEPLEEP";
 
     /**
      * shared Texture resource among Pleep objects, should be static
      */
     final static protected Texture spritemap = new Texture(Gdx.files.internal(Constants.PLEEP_SPRITE_MAP));
-    public static final int DURATION_OF_DEATH_ANIMATION = 840;
     static protected TextureRegion[][] spritePosition = TextureRegion.split(spritemap, FRAME_WIDTH, FRAME_HEIGHT);
+    public static final int DURATION_OF_DEATH_ANIMATION = 840;
 
     private MoveDirection direction;
     private int velocity;
@@ -75,7 +77,7 @@ public abstract class BasePleep extends Actor implements Pleep {
         this.setY(ypos);
 
         //last step: update z-index in the collection of Actors
-        PopulationController.updateZIndexforPleeps();
+        PopulationController.getInstance().updateZIndexforPleeps();
     }
 
 
@@ -128,7 +130,7 @@ public abstract class BasePleep extends Actor implements Pleep {
                 break;
 
             case DEAD:
-                PopulationController.pleepKilledNotification();
+                PopulationController.getInstance().pleepKilledNotification();
                 this.remove();
                 break;
             default:
@@ -167,7 +169,7 @@ public abstract class BasePleep extends Actor implements Pleep {
 
     private void animate(Batch batch, Animation animation, MoveDirection direction) {
         if (animation == null || batch == null) {
-            System.out.println("NULL");
+            Gdx.app.log(LOGTAG, "Animation == NULL");
             return;
         }
 
