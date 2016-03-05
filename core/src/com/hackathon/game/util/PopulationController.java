@@ -3,6 +3,7 @@ package com.hackathon.game.util;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.hackathon.game.actors.pleeps.BasePleep;
 import com.hackathon.game.actors.pleeps.Pleep;
 import com.hackathon.game.actors.pleeps.PleepFactory;
 
@@ -71,9 +72,9 @@ public class PopulationController {
         if (currentPleepsNumber >= maxPleepsPopulation) {
             Actor chosenActor = stage.getActors().get(RANDOM.nextInt(actorsNumber));
 
-            Gdx.app.log(LOGTAG, "actorsNumber: " + actorsNumber);
+//            Gdx.app.log(LOGTAG, "actorsNumber: " + actorsNumber);
 
-            if(chosenActor instanceof Pleep) {
+            if(chosenActor instanceof Pleep && !((BasePleep)chosenActor).isBehindEdges()) {
                 Gdx.app.log(LOGTAG, "Russian roulette - killPleep");
                 ((Pleep)chosenActor).killPleep();
             }

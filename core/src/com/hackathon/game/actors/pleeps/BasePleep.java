@@ -58,13 +58,12 @@ public abstract class BasePleep extends Actor implements Pleep {
     private void initPleepFields() {
         this.direction = MoveDirection.RIGHT;
         this.setX(-FRAME_WIDTH);
-        this.velocity = 2;
         this.statetime = 0f;
 
         // Set a direction for the pleep
         int randd = Helpers.randomInt(0, 1);
         if (randd > 0) {
-            this.direction = MoveDirection.LEFT;
+            this.direction = MoveDirection.RIGHT;
             this.setX(BOUNCE_MAX);
             this.velocity = -2;
         } else {
@@ -155,16 +154,26 @@ public abstract class BasePleep extends Actor implements Pleep {
         if ((this.direction == MoveDirection.RIGHT && this.getX() > BOUNCE_MAX)
                 || (this.direction == MoveDirection.LEFT && this.getX() < BOUNCE_MIN)) {
 
-            this.velocity = -this.velocity;
+            this.velocity = Math.negateExact(this.velocity);
             this.direction = direction.getOppositeDirection();
 
             if (this.direction == MoveDirection.RIGHT) {
                 this.incrementPosX(FRAME_WIDTH / 2);
             } else {
-                this.incrementPosX(-(FRAME_WIDTH / 2));
+                this.incrementPosX(Math.negateExact(FRAME_WIDTH / 2));
             }
+        } else {
+
+            this.incrementPosX(this.velocity);
         }
-        this.incrementPosX(this.velocity);
+    }
+
+    public boolean isBehindEdges() {
+        if (getX() < -100 || getX() > 500) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private void animate(Batch batch, Animation animation, MoveDirection direction) {
@@ -288,7 +297,7 @@ public abstract class BasePleep extends Actor implements Pleep {
         return this.velocity;
     }
 
-    private void incrementPosX(float val) {
+    private void incrementPosX(int val) {
         this.setX(getX() + val);
     }
 
